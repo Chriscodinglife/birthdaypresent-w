@@ -1,0 +1,7 @@
+sender_params.json
+payload.json
+.vscode
+__pycache__
+*/images/*.png
+*/scratch/*.png
+*/app/images/*.png
