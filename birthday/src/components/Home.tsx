@@ -31,7 +31,7 @@ export const Home = () => {
           we made this small website for you to have fun with.
         </h3>
         <button className="rounded-md bg-white py-4 px-4 font-semi-bold hover:bg-blue-600 hover:text-white ease-in duration-100">
-          Get Started 🔥
+          <a href="#makecake">Get Started 🔥</a>
         </button>
         <h3 className="font-extra-light text-center text-white text-sm m-10">
           Just promise you won't try to break anything 🤡

@@ -38,7 +38,7 @@ export const Navbar = () => {
     if (import.meta.env.VITE_NAME) {
       setFriendName(import.meta.env.VITE_FRIEND);
     } else {
-      setFriendName("Friend");
+      setFriendName("BFF");
     }
   }, []);
 
