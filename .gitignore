@@ -5,3 +5,4 @@ __pycache__
 */images/*.png
 */scratch/*.png
 */app/images/*.png
+keys.json
