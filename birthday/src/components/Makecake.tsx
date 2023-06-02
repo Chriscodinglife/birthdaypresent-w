@@ -11,11 +11,12 @@ export const Makecake = () => {
     setIsLoading(true); // Show loading state
 
     try {
-      const response = await fetch("http://localhost:51029/get_image");
+      const response = await fetch("http://localhost:8000/get_image");
       if (response.ok) {
         const imageBlob = await response.blob();
         const imageUrl = URL.createObjectURL(imageBlob);
         setImageSrc(imageUrl);
+        // fetchNumImages();
       } else {
         // Handle error response
         console.error("Failed to fetch new cake image");
@@ -29,17 +30,17 @@ export const Makecake = () => {
     }
   };
 
-  useEffect(() => {
-    // Fetch the initial number of images
-    fetchNumImages();
+  // useEffect(() => {
+  //   // Fetch the initial number of images
+  //   fetchNumImages();
 
-    // Poll the number of images every 10 seconds
-    const intervalId = setInterval(fetchNumImages, 10000);
+  //   // Poll the number of images every 10 seconds
+  //   const intervalId = setInterval(fetchNumImages, 10000);
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, []);
 
   useEffect(() => {
     // Trigger handleGetNewCake when numImages is updated
@@ -50,7 +51,7 @@ export const Makecake = () => {
 
   const fetchNumImages = async () => {
     try {
-      const response = await fetch("http://localhost:51029/get_num_images");
+      const response = await fetch("http://localhost:8000/get_num_images");
       if (response.ok) {
         const data = await response.json();
         console.log("Num images: ", data.num_images);

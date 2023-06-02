@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Makecake from "./components/Makecake";
 import FriendsList from "./components/FriendsList";
+import FriendSays from "./components/FriendSays";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Home />
       <FriendsList names={["Cesar", "Maria", "Lauren", "Shreeyans", "Chris"]} />
       <Makecake />
+      <FriendSays />
     </div>
   );
 }
