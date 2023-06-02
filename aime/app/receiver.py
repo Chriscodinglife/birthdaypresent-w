@@ -12,14 +12,14 @@ from PIL import Image
 from aime import Aime
 from datetime import datetime
 
-aime = Aime()
-
-
 class Receiver:
-    def __init__(self, params, local_path):
+    def __init__(self, params, local_path, aime):
         self.params = params
         self.local_path = local_path
         self.max_images = 4
+        self.running = True
+        
+        self.aime = aime
 
         self.sender_initializer()
 
@@ -154,15 +154,18 @@ class Receiver:
     def generate_new_images(self):
         image_files = os.listdir(self.local_path)
         if not image_files:
-            aime.generate_new_image()
+            self.aime.generate_new_image()
 
     def main(self):
-        while True:
-            self.collecting_results()
-            self.outputer()
-            self.downloading_results()
-            self.generate_new_images()
-            time.sleep(5)
+        try:
+            while self.running:
+                self.collecting_results()
+                self.outputer()
+                self.downloading_results()
+                self.generate_new_images()
+                time.sleep(5)
+        except KeyboardInterrupt:
+            self.running = False  # Set running flag to False when KeyboardInterrupt occurs
 
 
 def parse_args(args):
@@ -177,12 +180,12 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-if __name__ == "__main__":
-    args = sys.argv[1:]
-    args = parse_args(args)
-    params = args.params
-    local_path = args.local_path  #'/Users/georgeb/discord_api/images/'
+# if __name__ == "__main__":
+#     args = sys.argv[1:]
+#     args = parse_args(args)
+#     params = args.params
+#     local_path = args.local_path  #'/Users/georgeb/discord_api/images/'
 
-    print("=========== listening started ===========")
-    receiver = Receiver(params, local_path)
-    receiver.main()
+#     print("=========== listening started ===========")
+#     receiver = Receiver(params, local_path)
+#     receiver.main()
