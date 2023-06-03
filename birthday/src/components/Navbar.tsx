@@ -127,7 +127,7 @@ export const Navbar = () => {
               Make A Cake
             </a>
             <a
-              href={friendName}
+              href="#friendsays"
               className="m-2 p-3 cursor-pointer text-white hover:text-blue-600 ease-in duration-300 font-semibold"
             >
               {friendName} Says

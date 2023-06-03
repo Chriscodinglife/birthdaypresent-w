@@ -26,17 +26,17 @@ const FriendSays = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="flex flex-row-reverse items-center w-96 bg-white rounded-lg shadow">
-        <div className="p-4">
+    <div id="friendsays" className="flex items-center justify-center">
+      <div className="flex flex-row items-center justify-between w-[75%] bg-black rounded-lg shadow">
+        <div className="w-1/3 m-8 flex justify-center">
           <img
             src={FriendImage}
             alt="Friend"
-            className="h-24 w-24 rounded-full"
+            className="rounded-full h-80 object-cover"
           />
         </div>
-        <div className="p-4 bg-blue-500 text-white rounded-t-lg">
-          <p className="text-2xl font-bold">{message}</p>
+        <div className="w-2/3 bg-blue-500 text-white rounded-t-lg p-14 m-10">
+          <p className="text-xl font-bold">{message}</p>
         </div>
       </div>
     </div>

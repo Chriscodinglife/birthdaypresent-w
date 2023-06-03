@@ -1,4 +1,6 @@
 import os
+import sys
+import signal
 import logging
 import threading
 from aime import Aime
@@ -15,15 +17,33 @@ app = FastAPI()
 logging.basicConfig(level=logging.INFO)
 aime = Aime()
 
+# Pass in certain necessary paramaters
 params = "./keys/sender_params.json"
 image_dir = "./images/"
+
+# Initiate the receiver for images
 receiver = Receiver(params, image_dir, aime)
+
+
+def shutdown_event(signal, frame):
+    """Function to handle the shutdown event or signal."""
+    # Stop the receiver thread
+    receiver.stop()  # Assuming you have a stop method in your Receiver class
+
+    # Wait for the receiver thread to join
+    receiver_thread.join()
+
+    # Exit the program
+    sys.exit(0)
+    
+    
+# Register the shutdown event or signal handler
+signal.signal(signal.SIGINT, shutdown_event)  # Handles the Ctrl+C event
+signal.signal(signal.SIGTERM, shutdown_event)  # Handles the termination signal
 
 # Start the receiver process
 receiver_thread = threading.Thread(target=receiver.main)
 receiver_thread.start()
-
-
 
 # Set CORS
 origins = [
@@ -52,10 +72,9 @@ async def send_prompt(prompt: str):
     sender.send(prompt)
     return {"message": "Prompt sent successfully"}
 
+
 old_image = None
 
-get_image_counter = 0
-get_image_limit = 4  # Maximum number of image requests allowed when image count is less than 2
 
 @app.get("/get_image")
 def get_image(background_tasks: BackgroundTasks):
@@ -63,11 +82,6 @@ def get_image(background_tasks: BackgroundTasks):
     
     # Set some global variables
     global old_image
-    global get_image_counter
-    
-    # Raise an error if the Get Image Limit has been reached
-    if get_image_counter > get_image_limit:
-        raise HTTPException(status_code=429, detail="Image request limit reached")
     
     # Delete the old image that was used
     if old_image is not None:
@@ -75,9 +89,7 @@ def get_image(background_tasks: BackgroundTasks):
         old_image_path = os.path.join(image_dir, old_image)
         if os.path.exists(old_image_path):
             background_tasks.add_task(aime.delete_image, old_image)
-            
-    # Increment the counter
-    get_image_counter += 1
+        
 
     image_file = aime.get_random_image(old_image=old_image)
     if image_file:
@@ -93,17 +105,12 @@ def get_image(background_tasks: BackgroundTasks):
 @app.get("/get_num_images")
 async def get_num_images():
     """Get the number of images in the images folder"""
-    global get_image_counter
     
     # Get the number of images in this server
     number_of_images = aime.get_num_images()
     
-    # If the images are greater than 2, then reset the counter
-    if number_of_images > 2:
-        get_image_counter = 0
-    
     # Return the number of images to the frontend
-    return {"num_images": aime.get_num_images()}
+    return {"num_images": number_of_images}
 
 
 @app.get("/get_birthday_message")

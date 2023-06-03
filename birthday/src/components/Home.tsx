@@ -13,7 +13,7 @@ export const Home = () => {
     }
   }, []);
   return (
-    <div id="home" className="pt-56 mb-10">
+    <div id="home" className="pt-24 mb-10">
       <div className="flex flex-col items-center justify-center">
         <h3 className="font-semibold text-center text-white text-sm mb-10 rounded-xl bg-slate-900 px-2 py-1 outline-1 outline-gray-600">
           🎂 Well if it ain't birthday boy!
