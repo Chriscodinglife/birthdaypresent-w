@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Makecake = () => {
   const [imageSrc, setImageSrc] = useState("");
@@ -12,7 +12,9 @@ export const Makecake = () => {
     setIsLoading(true);
 
     const timestamp = Date.now();
-    const url = `http://localhost:8000/get_image?timestamp=${timestamp}`;
+    const url = `${
+      import.meta.env.VITE_BACKEND_SERVER
+    }/get_image?timestamp=${timestamp}`;
 
     try {
       const response = await fetch(url);
@@ -38,7 +40,9 @@ export const Makecake = () => {
       setIsLoading(true);
 
       try {
-        const response = await fetch("http://localhost:8000/get_image");
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_SERVER}/get_image`
+        );
         if (response.ok) {
           const imageBlob = await response.blob();
           const imageUrl = URL.createObjectURL(imageBlob);
@@ -78,7 +82,9 @@ export const Makecake = () => {
 
   const fetchNumImages = async () => {
     try {
-      const response = await fetch("http://localhost:8000/get_num_images");
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_SERVER}/get_num_images`
+      );
       if (response.ok) {
         const data = await response.json();
         console.log("Num images: ", data.num_images);
@@ -94,36 +100,34 @@ export const Makecake = () => {
   };
 
   return (
-    <div id="makecake" className="w-full p-10">
-      <div className="flex flex-col justify-center items-center">
-        <div className="flex flex-row items-center justify-center">
-          <h2 className="text-white font-semi-bold w-1/3 p-7 m-5">
-            Make some awesome 8-bit dragons with our{" "}
-            <span className="text-blue-600">Dragon and Cake Generator</span>.
-            <br />
-            <br />
-            <br />
-            🤔Who knows, this can be your next discord icon?
-          </h2>
-          <div className="flex flex-col items-center justify-center w-2/3">
-            <img src={imageSrc} alt="ai_image" className="w-1/2" />
-            <div className="p-10">
-              <button
-                className={`bg-white text-black font-semi-bold px-4 py-2 rounded ${
-                  numImages <= 2
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "hover:bg-blue-600 hover:text-white"
-                }`}
-                onClick={handleGetNewCake}
-                disabled={buttonDisabled}
-              >
-                {isLoading
-                  ? "One Moment Bruh"
-                  : numImages <= 2
-                  ? "One Moment Bruh"
-                  : "Get New Cake 🍑"}
-              </button>
-            </div>
+    <div id="makecake" className="w-full p-10 mt-20">
+      <div className="flex flex-col md:flex-row items-center justify-center">
+        <h2 className="text-white md:font-semi-bold md:text-2xl md:w-1/3 p-7 m-5">
+          Make some awesome 8-bit dragons with our{" "}
+          <span className="text-blue-600">Dragon and Cake Generator</span>.
+          <br />
+          <br />
+          <br />
+          🤔Who knows, this can be your next discord icon?
+        </h2>
+        <div className="flex flex-col items-center justify-center md:w-2/3 w-[95%]">
+          <img src={imageSrc} alt="ai_image" className="md:w-1/2 w-[80%]" />
+          <div className="p-10">
+            <button
+              className={`bg-white text-black font-semi-bold px-4 py-2 rounded ${
+                numImages <= 2
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "hover:bg-blue-600 hover:text-white"
+              }`}
+              onClick={handleGetNewCake}
+              disabled={buttonDisabled}
+            >
+              {isLoading
+                ? "One Moment Bruh"
+                : numImages <= 2
+                ? "One Moment Bruh"
+                : "Get New Cake 🍑"}
+            </button>
           </div>
         </div>
       </div>

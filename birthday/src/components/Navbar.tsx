@@ -35,7 +35,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     // Fetch the value of the environment variable and set it as the initial value of birthdayName
-    if (import.meta.env.VITE_NAME) {
+    if (import.meta.env.VITE_FRIEND) {
       setFriendName(import.meta.env.VITE_FRIEND);
     } else {
       setFriendName("BFF");
@@ -76,7 +76,7 @@ export const Navbar = () => {
           </a>
           <a
             onClick={handleNav}
-            href={friendName}
+            href="#friendsays"
             className="w-[75%] flex justify-center items-center rounded-lg shadow-lg bg-gray-100 shadow-gray-400 m-2 p-4 py-5 cursor-pointer hover:scale-110 ease-in duration-200"
           >
             <AiOutlineComment size={20} />
