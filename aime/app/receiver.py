@@ -12,6 +12,7 @@ from PIL import Image
 from aime import Aime
 from datetime import datetime
 
+
 class Receiver:
     def __init__(self, params, local_path, aime):
         self.params = params
@@ -26,11 +27,11 @@ class Receiver:
         self.df = pd.DataFrame(columns=["prompt", "url", "filename", "is_downloaded"])
 
     def sender_initializer(self):
-        with open(self.params, "r") as json_file:
-            params = json.load(json_file)
+        # with open(self.params, "r") as json_file:
+        #     params = json.load(json_file)
 
-        self.channelid = params["channelid"]
-        self.authorization = params["authorization"]
+        self.channelid = self.params["channelid"]
+        self.authorization = self.params["authorization"]
         self.headers = {"authorization": self.authorization}
 
     def retrieve_messages(self):

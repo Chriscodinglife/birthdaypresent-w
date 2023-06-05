@@ -1,5 +1,6 @@
 import os
 import sys
+import boto3
 import signal
 import logging
 import threading
@@ -8,6 +9,7 @@ from sender import Sender
 from receiver import Receiver
 from starlette.requests import Request
 from fastapi.responses import FileResponse
+from botocore.exceptions import ClientError
 from fastapi import FastAPI, BackgroundTasks, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -15,14 +17,47 @@ app = FastAPI()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-aime = Aime()
 
 # Pass in certain necessary paramaters
-params = "./keys/sender_params.json"
+params = None
+
+
+@app.on_event("startup")
+def startup_event():
+    """"Function to retrieve the sender parameters from AWS Secrets Manager on app startup"""
+    
+    global params
+
+    secret_name = os.environ.get("SECRET_NAME")
+    region_name = os.environ.get("REGION_NAME")
+
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+
+
+    try:
+        get_secret_value_response = client.get_secret_value(
+            SecretId=secret_name
+        )
+    except ClientError as e:
+
+        raise e
+    
+    params = get_secret_value_response['SecretString']
+
+
 image_dir = "./images/"
 
+# Initiate the Aime object
+aime = Aime(params)
 # Initiate the receiver for images
 receiver = Receiver(params, image_dir, aime)
+
+
 
 
 def shutdown_event(signal, frame):

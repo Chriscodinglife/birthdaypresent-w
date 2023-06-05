@@ -7,11 +7,9 @@ import json
 
 IMAGES_FOLDER = "./images"
 
-keys="./keys/keys.json"
-
 
 class Aime:
-    def __init__(self):
+    def __init__(self, keys):
         
         self.keys = keys
         
@@ -19,10 +17,10 @@ class Aime:
         
     def ai_initalizer(self):
         '''Initalize the Open AI Creds'''
-        with open (self.keys) as json_file:
-            keys = json.load(json_file)
+        # with open (self.keys) as json_file:
+        #     keys = json.load(json_file)
             
-        self.ai_keys = keys['open_ai']
+        self.ai_keys = self.keys['open_ai']
         openai.api_key = self.ai_keys
 
 

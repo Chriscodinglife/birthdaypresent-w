@@ -25,3 +25,8 @@ You can get the filename running the /get_image endpoint first, getting the cont
 ### Get the number of images left in the backend
 
 `/get_num_images`
+
+### ENV VARS
+
+SECRET_NAME
+REGION_NAME
