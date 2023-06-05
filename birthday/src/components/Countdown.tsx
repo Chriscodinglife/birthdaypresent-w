@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import CountdownCalculator from "../hooks/CountdownCalculator";
 
 const Countdown = () => {

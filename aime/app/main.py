@@ -47,7 +47,7 @@ receiver_thread.start()
 
 # Set CORS
 origins = [
-    "http://localhost:5173",
+    "*",
 ]
 
 app.add_middleware(
