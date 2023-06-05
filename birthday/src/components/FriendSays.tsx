@@ -15,7 +15,7 @@ const FriendSays = () => {
     const fetchBirthdayMessage = async () => {
       try {
         const response = await axios.get<BirthdayMessageResponse>(
-          "http://127.0.0.1:8000/get_birthday_message"
+          `${import.meta.env.VITE_BACKEND_SERVER}/get_birthday_message`
         );
         console.log(response);
         setMessage(response.data.text);
