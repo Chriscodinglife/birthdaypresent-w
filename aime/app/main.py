@@ -24,6 +24,7 @@ params = ""
 
 secret_name = os.environ.get("SECRET_NAME")
 region_name = os.environ.get("REGION_NAME")
+domain = os.environ.get("DOMAIN")
 
 # Create a Secrets Manager client
 session = boto3.session.Session()
@@ -62,7 +63,7 @@ receiver_thread.start()
 
 # Set CORS
 origins = [
-    "*",
+    domain
 ]
 
 app = FastAPI()
