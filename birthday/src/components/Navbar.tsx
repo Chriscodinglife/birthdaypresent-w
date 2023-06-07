@@ -50,7 +50,7 @@ export const Navbar = () => {
     <div>
       <AiOutlineUpSquare
         onClick={handleNav}
-        className="block fixed w-full ml-52 mt-5 z-50 md:hidden text-white text-2xl"
+        className="fixed top-3 right-3 z-50 text-white p-2 md:hidden text-4xl"
       />
       {nav ? (
         <div className="fixed w-full h-screen bg-black flex flex-col justify-center items-center z-20">
