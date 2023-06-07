@@ -6,3 +6,4 @@ __pycache__
 */scratch/*.png
 */app/images/*.png
 keys.json
+test.py

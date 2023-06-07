@@ -17,7 +17,7 @@ export const Makecake = () => {
     }/get_image?timestamp=${timestamp}`;
 
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, { mode: "no-cors" });
       if (response.ok) {
         const imageBlob = await response.blob();
         const imageUrl = URL.createObjectURL(imageBlob);
@@ -41,7 +41,8 @@ export const Makecake = () => {
 
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_SERVER}/get_image`
+          `${import.meta.env.VITE_BACKEND_SERVER}/get_image`,
+          { mode: "no-cors" }
         );
         if (response.ok) {
           const imageBlob = await response.blob();
@@ -83,7 +84,8 @@ export const Makecake = () => {
   const fetchNumImages = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_SERVER}/get_num_images`
+        `${import.meta.env.VITE_BACKEND_SERVER}/get_num_images`,
+        { mode: "no-cors" }
       );
       if (response.ok) {
         const data = await response.json();

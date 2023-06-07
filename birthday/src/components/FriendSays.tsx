@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import FriendImage from "../assets/friend.jpg";
 import CountdownCalculator from "../hooks/CountdownCalculator";
 
@@ -14,16 +13,23 @@ const FriendSays = () => {
   useEffect(() => {
     const fetchBirthdayMessage = async () => {
       try {
-        const response = await axios.get<BirthdayMessageResponse>(
-          `${import.meta.env.VITE_BACKEND_SERVER}/get_birthday_message`
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_SERVER}/get_birthday_message`,
+          { mode: "no-cors" }
         );
-        console.log(response);
-        setMessage(response.data.text);
+        if (response.ok) {
+          const data: BirthdayMessageResponse = await response.json();
+          setMessage(data.text);
+        } else {
+          console.error(
+            "Error fetching birthday message. Status:",
+            response.status
+          );
+        }
       } catch (error) {
         console.error("Error fetching birthday message:", error);
       }
     };
-
     fetchBirthdayMessage();
   }, []);
 

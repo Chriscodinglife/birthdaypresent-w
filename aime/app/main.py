@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 import boto3
 import signal
 import logging
@@ -8,46 +9,43 @@ from aime import Aime
 from sender import Sender
 from receiver import Receiver
 from starlette.requests import Request
+from contextlib import asynccontextmanager
 from fastapi.responses import FileResponse
 from botocore.exceptions import ClientError
-from fastapi import FastAPI, BackgroundTasks, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, BackgroundTasks, HTTPException
 
-app = FastAPI()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
 # Pass in certain necessary paramaters
-params = None
+params = ""
 
+secret_name = os.environ.get("SECRET_NAME")
+region_name = os.environ.get("REGION_NAME")
 
-@app.on_event("startup")
-def startup_event():
-    """"Function to retrieve the sender parameters from AWS Secrets Manager on app startup"""
-    
-    global params
+# Create a Secrets Manager client
+session = boto3.session.Session()
+client = session.client(
+    service_name='secretsmanager',
+    region_name=region_name
+)
 
-    secret_name = os.environ.get("SECRET_NAME")
-    region_name = os.environ.get("REGION_NAME")
-
-    # Create a Secrets Manager client
-    session = boto3.session.Session()
-    client = session.client(
-        service_name='secretsmanager',
-        region_name=region_name
+try:
+    get_secret_value_response = client.get_secret_value(
+        SecretId=secret_name
     )
-
-
-    try:
-        get_secret_value_response = client.get_secret_value(
-            SecretId=secret_name
-        )
-    except ClientError as e:
-
-        raise e
     
-    params = get_secret_value_response['SecretString']
+    if 'SecretString' in get_secret_value_response:
+        params = json.loads(get_secret_value_response['SecretString'])
+    else:
+        logging.error("SecretString not found in response")
+        # Handle the error condition accordingly
+    
+except ClientError as e:
+    logging.error(e)
+    # Handle the exception accordingly
 
 
 image_dir = "./images/"
@@ -57,33 +55,17 @@ aime = Aime(params)
 # Initiate the receiver for images
 receiver = Receiver(params, image_dir, aime)
 
-
-
-
-def shutdown_event(signal, frame):
-    """Function to handle the shutdown event or signal."""
-    # Stop the receiver thread
-    receiver.stop()  # Assuming you have a stop method in your Receiver class
-
-    # Wait for the receiver thread to join
-    receiver_thread.join()
-
-    # Exit the program
-    sys.exit(0)
-    
-    
-# Register the shutdown event or signal handler
-signal.signal(signal.SIGINT, shutdown_event)  # Handles the Ctrl+C event
-signal.signal(signal.SIGTERM, shutdown_event)  # Handles the termination signal
-
 # Start the receiver process
 receiver_thread = threading.Thread(target=receiver.main)
 receiver_thread.start()
+
 
 # Set CORS
 origins = [
     "*",
 ]
+
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
