@@ -14,8 +14,7 @@ const FriendSays = () => {
     const fetchBirthdayMessage = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_SERVER}/get_birthday_message`,
-          { mode: "no-cors" }
+          `${import.meta.env.VITE_BACKEND_SERVER}/get_birthday_message`
         );
         if (response.ok) {
           const data: BirthdayMessageResponse = await response.json();
