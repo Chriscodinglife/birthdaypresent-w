@@ -18,7 +18,7 @@ export const Home = () => {
     <div id="home" className="pt-24 mb-10">
       <div className="flex flex-col items-center justify-center">
         <h3 className="font-semibold text-center text-white text-sm mb-10 rounded-xl bg-slate-900 px-2 py-1 outline-1 outline-gray-600">
-          🎂 Well if it ain't birthday boy!
+          🎂 Well if it ain't the birthday boy!
         </h3>
         <h1 className="font-bold text-center text-3xl text-white md:text-5xl mb-10 leading-normal md:leading-relaxed">
           Happy Birthday,
