@@ -13,7 +13,7 @@ const CountdownCalculator = () => {
   const calculateTimeLeft = (): timeLeft => {
     // Get the current year
     let this_year = new Date().getFullYear();
-    const difference = +new Date(`1/26/${this_year}`) - +new Date();
+    const difference = +new Date(`6/26/${this_year}`) - +new Date();
 
     // Make a blank array to get the time thats left
     let timeLeft: timeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
