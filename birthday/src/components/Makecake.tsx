@@ -23,6 +23,7 @@ export const Makecake = () => {
         const imageUrl = URL.createObjectURL(imageBlob);
         setImageSrc(imageUrl);
       } else {
+        console.error(response);
         console.error("Failed to fetch new cake image");
       }
     } catch (error) {
@@ -49,6 +50,7 @@ export const Makecake = () => {
           const imageUrl = URL.createObjectURL(imageBlob);
           setImageSrc(imageUrl);
         } else {
+          console.error(response);
           console.error("Failed to fetch initial cake image");
         }
       } catch (error) {
@@ -92,6 +94,7 @@ export const Makecake = () => {
         console.log("Num images: ", data.num_images);
         setNumImages(data.num_images);
       } else {
+        console.error(response);
         console.error("Failed to fetch number of images");
       }
     } catch (error) {
